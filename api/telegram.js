@@ -22,44 +22,37 @@ module.exports = async (req, res) => {
 
 
 async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
-    const uri = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
-  
-    const options = {
-      'method': 'POST',
-      'headers': {
-        'Content-type': 'application/json',
-        "Cache-Control": "no-cache"
-      },
-      'body': JSON.stringify({
-        'chat_id': chat_id,
-        'text': text
+        const uri = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
+
+        const data = JSON.stringify({
+            "chat_id": "198940317",
+            "text": "hek"
+        });
+      
+      const config = {
+        method: 'post',
+        url: uri,
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Cache-Control': 'no-cache'
+        },
+        data : data
+      };
+      
+      const response = await axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        return JSON.stringify(response.data);
       })
-    }
-    //return options; //to debug;
-    const httpResponse = await axios.get(uri, options);
-    return httpResponse;
+      .catch(function (error) {
+        console.log(error);
+        return JSON.stringify(error);
+      });
   }
   
-  async function getCovid() {
-    let date = '31-03-2021';
-    let pincode = '400097';
-    const uri = `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${date}`;
-  
-    const options = {
-      'method': 'GET',
-      'headers': {
-        'Content-type': 'application/json',
-        "Cache-Control": "no-cache"
-      }
-    }
-    //return options; //to debug;
-    const httpResponse = await axios.get(uri, options);
-    return httpResponse;
-  }
 
-
-  function pingCowin() {
-    axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=${districtId}&date=${date}`).then((result) => {
+async function pingCowin() {
+    const response = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=${districtId}&date=${date}`).then((result) => {
         const { centers }= result.data;
         let isSlotAvailable = false;
         let dataOfSlot = "";
@@ -77,6 +70,7 @@ async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
                 }))
             });
         }
+        return JSON.stringify(result.data);
         if(isSlotAvailable) {
             axios.post(`https://maker.ifttt.com/trigger/${iftttWebhookName}/with/key/${iftttWebhookKey}`, { value1: dataOfSlot }).then(() => {
                 console.log('Sent Notification to Phone \nStopping Pinger...')
