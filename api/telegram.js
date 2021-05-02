@@ -16,9 +16,8 @@ function getDate() {
 const date = getDate();
 
 module.exports = async (req, res) => {
-    const date = new Date().toString();
-    //const response = await sendToTelegram();
-    res.status(200).send(JSON.stringify(process.env));
+    const response = await sendToTelegram();
+    res.status(200).send(JSON.stringify(response));
 };
 
 
