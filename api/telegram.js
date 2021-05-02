@@ -58,7 +58,8 @@ async function getState() {
         url: 'https://cdn-api.co-vin.in/api/v2/admin/location/states',
         headers: { 
             'Content-Type': 'application/json', 
-            'Cache-Control': 'no-cache'
+            'Cache-Control': 'no-cache',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36'
         }
     };
 
