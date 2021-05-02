@@ -17,7 +17,7 @@ const date = getDate();
 
 module.exports = async (req, res) => {
     
-    const cowinData = await pingCowin("400097", date);
+    const cowinData = await getState();
     const response = await sendToTelegram(cowinData);
     res.status(200).send(JSON.stringify(response));
 };
@@ -50,8 +50,29 @@ async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
         console.log(error);
         return JSON.stringify(error);
       });
-  }
-  
+}
+
+async function getState() {
+    var config = {
+        method: 'get',
+        url: 'https://cdn-api.co-vin.in/api/v2/admin/location/states',
+        headers: { 
+            'Content-Type': 'application/json', 
+            'Cache-Control': 'no-cache'
+        }
+    };
+
+    const response = await axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            return response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+            return error;
+        });
+    return response;
+}
 
 async function pingCowin(pincode, date) {
     const response = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${date}`).then((result) => {
