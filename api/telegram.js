@@ -37,7 +37,7 @@ async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
       })
     }
     //return options; //to debug;
-    const httpResponse = await fetch(uri, options);
+    const httpResponse = await axios.get(uri, options);
     return httpResponse;
   }
   
@@ -54,7 +54,7 @@ async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
       }
     }
     //return options; //to debug;
-    const httpResponse = await fetch(uri, options);
+    const httpResponse = await axios.get(uri, options);
     return httpResponse;
   }
 
