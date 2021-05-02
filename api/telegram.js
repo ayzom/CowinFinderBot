@@ -1,5 +1,10 @@
 const axios = require('axios');
 
+const customInstance = axios.create ({
+    baseURL : 'https://axios-app.firebaseio.com',
+    headers: {'Accept': 'application/json'}
+});
+
 const districtId = '<DISTRICT-ID>'; // Replace value here
 const yourAge = 27  //Replace age with your age.
 const appointmentsListLimit = 2 //Increase/Decrease it based on the amount of information you want in the notification.
@@ -64,7 +69,7 @@ async function getState() {
         }
     };
 
-    const response = await axios(config)
+    const response = await customInstance(config)
         .then(function (response) {
             console.log(JSON.stringify(response.data));
             return response.data;
