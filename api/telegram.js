@@ -5,8 +5,8 @@ module.exports = async (req, res) => {
 };
 
 
-async function sendToTelegram(text="",chat_id=TGUSER_ID) {
-    const uri = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
+    const uri = `https://api.telegram.org/bot${process.env.TELEGRAM_TOKEN}/sendMessage`;
   
     const options = {
       'method': 'POST',
