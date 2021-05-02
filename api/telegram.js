@@ -16,7 +16,9 @@ function getDate() {
 const date = getDate();
 
 module.exports = async (req, res) => {
-    const response = await sendToTelegram();
+    
+    const cowinData = await pingCowin("400097", date);
+    const response = await sendToTelegram(cowinData);
     res.status(200).send(JSON.stringify(response));
 };
 
@@ -26,7 +28,7 @@ async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
 
         const data = JSON.stringify({
             "chat_id": "198940317",
-            "text": "hek"
+            "text": JSON.stringify(text)
         });
       
       const config = {
@@ -51,8 +53,8 @@ async function sendToTelegram(text="",chat_id=process.env.TGUSER_ID) {
   }
   
 
-async function pingCowin() {
-    const response = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=${districtId}&date=${date}`).then((result) => {
+async function pingCowin(pincode, date) {
+    const response = await axios.get(`https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByPin?pincode=${pincode}&date=${date}`).then((result) => {
         const { centers }= result.data;
         let isSlotAvailable = false;
         let dataOfSlot = "";
@@ -80,4 +82,6 @@ async function pingCowin() {
     }).catch((err) => {
         console.log("Error: " + err.message);
     });
+
+    return response;
 }
