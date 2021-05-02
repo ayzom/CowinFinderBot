@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const customInstance = axios.create ({
-    baseURL : 'https://axios-app.firebaseio.com',
+    baseURL : 'https://cdn-api.co-vin.in/api/v2/admin/location/states',
     headers: {'Accept': 'application/json'}
 });
 
